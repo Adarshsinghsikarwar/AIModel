@@ -26,6 +26,10 @@ if (!process.env.GOOGLE_CALLBACK_URL) {
     console.error("GOOGLE_CALLBACK_URL is not defined in environment variables");
     process.exit(1);
 }
+if (!process.env.MISTRAL_API_KEY) {
+    console.error("MISTRAL_API_KEY is not defined in environment variables");
+    process.exit(1);
+}
 
 const _config = {
     JWT_SECRET: process.env.JWT_SECRET,
@@ -33,6 +37,7 @@ const _config = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL,
+    MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
 }
 
 export default Object.freeze(_config);

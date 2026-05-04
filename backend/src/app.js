@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import config from "./config/config.js";
 import authRouter from "./routes/auth.route.js";
+import chatRouter from "./routes/chat.route.js";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
@@ -34,5 +35,5 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-
+app.use("/api/chats", chatRouter);
 export default app;

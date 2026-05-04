@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { googleAuthCallback } from "../controllers/auth.controller.js";
 
 const authRouter = Router();
 
@@ -11,14 +12,16 @@ authRouter.get(
   })
 );
 
+// Guard: only allow callback with OAuth params (code or error from Google)
 authRouter.get(
   "/google/callback",
-  // Guard: if the callback is visited directly (no `code` or `error` query),
-  // redirect to the auth start which includes the required `scope` param.
   (req, res, next) => {
     const hasOAuthParams = req.query && (req.query.code || req.query.error);
     if (!hasOAuthParams) {
-      return res.redirect("/api/auth/google");
+      return res.status(400).json({
+        error:
+          "Invalid callback: missing OAuth parameters. Start from /api/auth/google",
+      });
     }
     next();
   },
@@ -26,13 +29,7 @@ authRouter.get(
     session: false,
     failureRedirect: "/",
   }),
-  (req, res) => {
-    // Successful authentication, redirect or respond as needed
-    res.json({
-      message: "Google authentication successful",
-      user: req.user,
-    });
-  }
+  googleAuthCallback
 );
 
 export default authRouter;
